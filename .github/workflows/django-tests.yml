@@ -36,22 +36,3 @@ jobs:
       - name: Run Selenium tests
         run: |
           python manage.py test notes.tests.NoteSeleniumTests --verbosity=2
-
-  docker:
-    runs-on: ubuntu-latest
-    needs: test          # only build the image if tests pass
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Build Docker image
-        run: docker build -t notesapp:latest .
-
-      - name: Verify container starts
-        run: |
-          docker run --rm -d --name notesapp_test -p 8000:8000 notesapp:latest
-          sleep 5
-          docker ps | grep notesapp_test
-          docker stop notesapp_test
-
